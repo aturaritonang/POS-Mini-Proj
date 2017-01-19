@@ -1,0 +1,103 @@
+﻿@model IEnumerable<MiniProjectPOS.ViewModel.OutletViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OutletName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProvinceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DistrictName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OutletName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ProvinceName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.RegionName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DistrictName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                <div class="btn-group btn-group-sm btn-group-solid">
+                    <button type="button" class="btn btn-action btn-edit btn-warning" data-id="@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-action btn-details btn-success" data-id="@item.ID"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-action btn-delete btn-danger" data-id="@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+<script type="text/javascript">
+    $(".btn-edit").click(
+        function () {
+            var vid = $(this).attr("data-id");
+            $.ajax({
+                url: '@Url.Action("Edit", "Outlet")',
+                data: { id: vid },
+                type: 'get',
+                success: function (result) {
+                    $(".modal-body").html(result);
+                    $("#modal-form").modal("show");
+                }
+            });
+        }
+    );
+
+    $(".btn-delete").click(
+            function () {
+                var vid = $(this).attr("data-id");
+                $.ajax({
+                    url: '@Url.Action("Delete", "Outlet")',
+                    data: { id: vid },
+                    type: 'get',
+                    success: function (result) {
+                        $(".modal-body").html(result);
+                        $("#modal-form").modal("show");
+                    }
+                });
+            }
+        );
+</script>

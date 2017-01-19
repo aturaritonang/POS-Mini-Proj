@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MiniProjectPOS.ViewModel.CategoryViewModel>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemStock)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemStock) item(s)
+        </td>
+        <td>
+            <div class="btn-group btn-group-sm btn-group-solid">
+                <button type="button" class="btn btn-edit btn-warning" data-id="@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-delete btn-danger" data-id="@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+            </div>
+        </td>
+    </tr>
+}
+</table>
+
+<script type="text/javascript">
+        $(".btn-edit").click(
+                function () {
+                    var vid = $(this).attr("data-id");
+                    $.ajax({
+                        url: '@Url.Action("Edit", "Category")',
+                        data: { id: vid },
+                        type: 'get',
+                        success: function (result) {
+                            $(".modal-body").html(result);
+                            $("#modal-form").modal("show");
+                        }
+                    });
+                }
+            );
+
+        $(".btn-delete").click(
+                function () {
+                    var vid = $(this).attr("data-id");
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Category")',
+                        data: { id: vid },
+                        type: 'get',
+                        success: function (result) {
+                            $(".modal-body").html(result);
+                            $("#modal-form").modal("show");
+                        }
+                    });
+                }
+            );
+
+</script>
