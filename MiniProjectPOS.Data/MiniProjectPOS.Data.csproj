@@ -53,6 +53,7 @@
     <Compile Include="MSTEmployeeOutlet.cs" />
     <Compile Include="MSTItems.cs" />
     <Compile Include="MSTItemsVariant.cs" />
+    <Compile Include="MSTItemsVariantOutlet.cs" />
     <Compile Include="MSTOutlet.cs" />
     <Compile Include="MSTProvince.cs" />
     <Compile Include="MSTPurchaseOrderStatus.cs" />

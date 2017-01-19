@@ -37,5 +37,7 @@ namespace MiniProjectPOS.Data
         public virtual ICollection<TRXPaymentDetail> PaymentDetails { get; set; }
         [ForeignKey("ItemID")]        
         public virtual MSTItems Item { get; set; }
+
+        public virtual ICollection<MSTItemsVariantOutlet> ItemsVariantOutlets { get; set; }
     }
 }

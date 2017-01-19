@@ -27,6 +27,7 @@ namespace MiniProjectPOS.Data
         public virtual DbSet<MSTItems> MSTItems { get; set; }
 
         public virtual DbSet<MSTItemsVariant> MSTItemsVariant { get; set; }
+        public virtual DbSet<MSTItemsVariantOutlet> MSTItemsVariantOutlet { get; set; }
         public virtual DbSet<MSTPurchaseOrderStatus> MSTPurchaseOrderStatus { get; set; }
         public virtual DbSet<MSTSuppliers> MSTSuppliers { get; set; }
         public virtual DbSet<MSTRole> MSTRole { get; set; }

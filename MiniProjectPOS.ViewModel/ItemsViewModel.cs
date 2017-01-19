@@ -12,6 +12,7 @@ namespace MiniProjectPOS.ViewModel
         public string Name { get; set; }
         public int? CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public List<ItemsVariantViewModel> ItemVarians { get; set; }
     }
 
     public class ItemsVariantViewModel 
@@ -20,5 +21,10 @@ namespace MiniProjectPOS.ViewModel
         public string VariantName { get; set; }
         public string SKU { get; set; }
         public decimal? Price { get; set; }
+    }
+
+    public class ItemInventoryViewModel 
+    {
+
     }
 }

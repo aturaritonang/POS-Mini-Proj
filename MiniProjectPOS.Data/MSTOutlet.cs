@@ -58,5 +58,6 @@ namespace MiniProjectPOS.Data
 
         public virtual ICollection<TRXPurchaseOrder> PurchaseOrders { get; set; }
 
+        public virtual ICollection<MSTItemsVariantOutlet> ItemsVariantOutlets { get; set; }
     }
 }
