@@ -253,6 +253,7 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\ItemVarians.cshtml" />
     <Content Include="Views\Items\List.cshtml" />
+    <Content Include="Views\Items\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

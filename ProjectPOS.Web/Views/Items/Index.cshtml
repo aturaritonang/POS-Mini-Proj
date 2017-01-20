@@ -22,17 +22,13 @@
 <hr />
 <div id="TableList">
 </div>
-<div id="TableVariant">
-</div>
-<div id="TableInventory">
-</div>
 
 <div id="modal-form" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Supplier</h4>
+                <h4 class="modal-title">Items</h4>
             </div>
             <div class="modal-body">
                 <p>One fine body&hellip;</p>
@@ -45,7 +41,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             SearchDefault();
-            GetItemVariants();
         });
 
         function SearchDefault() {
@@ -56,16 +51,6 @@
                 type: 'get',
                 success: function (result) {
                     $("#TableList").html(result);
-                }
-            });
-        }
-
-        function GetItemVariants() {
-            $.ajax({
-                url: '@Url.Action("ItemVarians", "Items")',
-                type: 'get',
-                success: function (result) {
-                    $("#TableVariant").html(result);
                 }
             });
         }

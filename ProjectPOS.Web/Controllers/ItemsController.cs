@@ -26,5 +26,11 @@ namespace ProjectPOS.Web.Controllers
             List<ItemsVariantViewModel> model = new List<ItemsVariantViewModel>();
             return PartialView("ItemVarians", model);
         }
+
+        public ActionResult Edit(int id)
+        {
+            ViewBag.ListCategory = new SelectList(ProvinceDAL.GetAll(), "ID", "Name");
+            return PartialView("Edit", ItemsDAL.GetAll());
+        }
     }
 }

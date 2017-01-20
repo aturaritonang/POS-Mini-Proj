@@ -34,5 +34,6 @@ namespace MiniProjectPOS.DAL
             }
             return result;
         }
+
     }
 }
