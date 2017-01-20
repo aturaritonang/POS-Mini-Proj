@@ -1,0 +1,38 @@
+﻿@model IEnumerable<MiniProjectPOS.ViewModel.ItemsVariantViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.VariantName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SKU)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.VariantName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SKU)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            <div class="btn-group btn-group-sm btn-group-solid">
+                <button type="button" class="btn btn-action btn-edit btn-warning" data-id="@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-action btn-details btn-success" data-id="@item.ID"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-action btn-delete btn-danger" data-id="@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+            </div>
+        </td>
+    </tr>
+}
+
+</table>

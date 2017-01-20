@@ -44,8 +44,11 @@ namespace ProjectPOS.Web.Controllers
 
         public ActionResult Edit(int id)
         {
+            OutletViewModel model = OutletDAL.GetById(id);
             ViewBag.ProvinceList = new SelectList(ProvinceDAL.GetAll(), "ID", "ProvinceName");
-            return PartialView("Edit", OutletDAL.GetById(id));
+            ViewBag.RegionList = new SelectList(RegionDAL.GetByProvinceId(model.ProvinceID), "ID", "RegionName");
+            ViewBag.DistrictList = new SelectList(DistrictDAL.GetByRegionId(model.RegionID), "ID", "DistrictName");
+            return PartialView("Edit", model);
         }
 
         [HttpPost]

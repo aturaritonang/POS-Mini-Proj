@@ -42,8 +42,11 @@ namespace ProjectPOS.Web.Controllers
 
         public ActionResult Edit(int id)
         {
+            SupplierViewModel model = SupplierDAL.GetById(id);
             ViewBag.ProvinceList = new SelectList(ProvinceDAL.GetAll(), "ID", "ProvinceName");
-            return PartialView("Edit", SupplierDAL.GetById(id));
+            ViewBag.RegionList = new SelectList(RegionDAL.GetByProvinceId(model.ProvinceID), "ID", "RegionName");
+            ViewBag.DistrictList = new SelectList(DistrictDAL.GetByRegionId(model.RegionID), "ID", "DistrictName");
+            return PartialView("Edit", model);
         }
 
         [HttpPost]
@@ -57,7 +60,11 @@ namespace ProjectPOS.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
+
             ViewBag.ProvinceList = new SelectList(ProvinceDAL.GetAll(), "ID", "ProvinceName");
+            ViewBag.RegionList = new SelectList(RegionDAL.GetByProvinceId(model.ProvinceID), "ID", "RegionName");
+            ViewBag.DistrictList = new SelectList(DistrictDAL.GetByRegionId(model.RegionID), "ID", "DistrictName");
+
             return PartialView("Edit", model);
         }
 

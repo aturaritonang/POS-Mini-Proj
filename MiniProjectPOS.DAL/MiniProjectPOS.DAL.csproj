@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CategoryDAL.cs" />
     <Compile Include="DistrictDAL.cs" />
+    <Compile Include="ItemsDAL.cs" />
     <Compile Include="OutletDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinceDAL.cs" />

@@ -1,10 +1,11 @@
-﻿@model IEnumerable<MiniProjectPOS.ViewModel.SupplierViewModel>
+﻿
 
 @{
-    ViewBag.Title = "Supplier";
+    ViewBag.Title = "Items";
 }
 
 <h2>@ViewBag.Title</h2>
+
 <div class="row">
     <div class="col-sm-6">
         <div class="input-group">
@@ -21,6 +22,11 @@
 <hr />
 <div id="TableList">
 </div>
+<div id="TableVariant">
+</div>
+<div id="TableInventory">
+</div>
+
 <div id="modal-form" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -34,22 +40,18 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-@Scripts.Render("~/bundles/jqueryval")
+
 @section Scripts{
-    
     <script type="text/javascript">
         $(document).ready(function () {
-            searchDefault();
+            SearchDefault();
+            GetItemVariants();
         });
 
-        $(".btn-search").click(function () {
-            searchDefault();
-        });
-
-        function searchDefault() {
+        function SearchDefault() {
             var textSearch = $("#index-search").val();
             $.ajax({
-                url: '@Url.Action("Search", "Supplier")',
+                url: '@Url.Action("Search", "Items")',
                 data: { strSearch: textSearch },
                 type: 'get',
                 success: function (result) {
@@ -58,17 +60,14 @@
             });
         }
 
-        $("#btn-add").click(function () {
+        function GetItemVariants() {
             $.ajax({
-                url: '@Url.Action("Create", "Supplier")',
+                url: '@Url.Action("ItemVarians", "Items")',
                 type: 'get',
                 success: function (result) {
-                    $(".modal-body").html(result);
-                    $("#modal-form").modal("show");
+                    $("#TableVariant").html(result);
                 }
             });
-        });
-
-    </script>
+        }
+</script>
 }
-

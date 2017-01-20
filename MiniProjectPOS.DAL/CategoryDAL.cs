@@ -31,18 +31,19 @@ namespace MiniProjectPOS.DAL
             using (POSDataContext db = new POSDataContext())
             {
                 result = (from c in db.MSTCategory
-                          join o in db.MSTOutlet on c.OutletID equals o.ID into j1
-                          from i in j1.DefaultIfEmpty()
-                          join ts in db.TRXTransferStock on i.ID equals ts.ToOutlet into j2
-                          from j in j2.DefaultIfEmpty()
-                          join tsd in db.TRXTransferStockDetail on j.ID equals tsd.HeaderID into j3
-                          from k in j3.DefaultIfEmpty()
+                          join i in db.MSTItems on c.ID equals i.CategoryID into j1
+                          from j10 in j1.DefaultIfEmpty()
+                          join iv in db.MSTItemsVariant on j10.ID equals iv.ItemID into j2
+                          from j20 in j2.DefaultIfEmpty()
+                          join ivo in db.MSTItemsVariantOutlet on j20.ID equals ivo.VariantId into j3
+                          from j30 in j3.DefaultIfEmpty()
                           where c.Name.Contains(strSearch)
+                          group j30.Ending by new { c.ID, c.Name } into eg
                           select new CategoryViewModel
                           {
-                              ID = c.ID,
-                              Name = c.Name,
-                              ItemStock = j3.Sum(x => x.InStock) == null ? 0 : j3.Sum(x => x.InStock)
+                              ID = eg.Key.ID,
+                              Name = eg.Key.Name,
+                              ItemStock = eg.Sum() == null ? 0 : eg.Sum()
                           }).ToList();
             }
             return result;
@@ -54,18 +55,19 @@ namespace MiniProjectPOS.DAL
             using (POSDataContext db = new POSDataContext())
             {
                 result = (from c in db.MSTCategory
-                          join o in db.MSTOutlet on c.OutletID equals o.ID into j1
-                          from i in j1.DefaultIfEmpty()
-                          join ts in db.TRXTransferStock on i.ID equals ts.ToOutlet into j2
-                          from j in j2.DefaultIfEmpty()
-                          join tsd in db.TRXTransferStockDetail on j.ID equals tsd.HeaderID into j3
-                          from k in j3.DefaultIfEmpty()
+                          join i in db.MSTItems on c.ID equals i.CategoryID into j1
+                          from j10 in j1.DefaultIfEmpty()
+                          join iv in db.MSTItemsVariant on j10.ID equals iv.ItemID into j2
+                          from j20 in j2.DefaultIfEmpty()
+                          join ivo in db.MSTItemsVariantOutlet on j20.ID equals ivo.VariantId into j3
+                          from j30 in j3.DefaultIfEmpty()
                           select new CategoryViewModel
                           {
                               ID = c.ID,
-                              Name = c.Name,
-                              ItemStock = j3.Sum(x => x.InStock) == null ? 0 : j3.Sum(x => x.InStock)
+                              Name = c.Name + " - " + j20.VariantName,
+                              ItemStock = j3.Sum(x => x.Ending) == null ? 0 : j3.Sum(x => x.Ending) 
                           }).ToList();
+                //j30.Sum(x => x.) == null ? 0 : j3.Sum(x => x.InStock)
             }
             return result;
         }
@@ -75,18 +77,18 @@ namespace MiniProjectPOS.DAL
             using (POSDataContext db = new POSDataContext()) 
             {
                 result = (from c in db.MSTCategory
-                          join o in db.MSTOutlet on c.OutletID equals o.ID into j1
-                          from i in j1.DefaultIfEmpty()
-                          join ts in db.TRXTransferStock on i.ID equals ts.ToOutlet into j2
-                          from j in j2.DefaultIfEmpty()
-                          join tsd in db.TRXTransferStockDetail on j.ID equals tsd.HeaderID into j3
-                          from k in j3.DefaultIfEmpty()
+                          join i in db.MSTItems on c.ID equals i.CategoryID into j1
+                          from j10 in j1.DefaultIfEmpty()
+                          join iv in db.MSTItemsVariant on j10.ID equals iv.ItemID into j2
+                          from j20 in j2.DefaultIfEmpty()
+                          join ivo in db.MSTItemsVariantOutlet on j20.ID equals ivo.VariantId into j3
+                          from j30 in j3.DefaultIfEmpty()
                           where c.ID == id
                           select new CategoryViewModel
                           {
                               ID = c.ID,
                               Name = c.Name,
-                              ItemStock = j3.Sum(x => x.InStock) == null ? 0 : j3.Sum(x => x.InStock)
+                              ItemStock = j3.Sum(x => x.Ending) == null ? 0 : j3.Sum(x => x.Ending)
                           }).FirstOrDefault();
             }
             return result;
