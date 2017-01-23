@@ -21,6 +21,12 @@ namespace ProjectPOS.Web.Controllers
             return PartialView("List", ItemsDAL.GetAll());
         }
 
+        public ActionResult Create() 
+        {
+            ViewBag.ListCategory = new SelectList(CategoryDAL.GetAll(), "ID", "Name");
+            return PartialView();
+        }
+
         public ActionResult ItemVarians()
         {
             List<ItemsVariantViewModel> model = new List<ItemsVariantViewModel>();
@@ -29,8 +35,28 @@ namespace ProjectPOS.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewBag.ListCategory = new SelectList(ProvinceDAL.GetAll(), "ID", "Name");
-            return PartialView("Edit", ItemsDAL.GetAll());
+            ViewBag.ListCategory = new SelectList(CategoryDAL.GetAll(), "ID", "Name");
+            return PartialView("Edit", ItemsDAL.GetById(id));
+        }
+
+        public ActionResult AddVariant() 
+        {
+            return PartialView();
+        }
+
+        public ActionResult AddInventory() {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Create(ItemsViewModel model) 
+        {
+            if (ItemsDAL.Add(model))
+            {
+                return RedirectToAction("Index");
+            }
+            return PartialView("Create", model);
         }
     }
 }

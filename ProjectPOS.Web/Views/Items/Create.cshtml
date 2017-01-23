@@ -1,15 +1,13 @@
 ﻿@model MiniProjectPOS.ViewModel.ItemsViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h5>Edit</h5>
+        <h4>Create</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
-
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -31,17 +29,20 @@
             <table id="TableVariant">
             </table>
         </div>
-        <button type="button" class="btn btn-add-variant btn-success">Add Variant</button>
 
-        <div id="TableInventory">
+        <button type="button" class="btn btn-add-variant btn-success">Add Variant</button>
+        <hr />
+
+        <div class="form-group">
             <table id="TableInventory">
             </table>
         </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-save btn-primary">Save</button>
+            <button id="btn-save-item" type="button" class="btn btn-primary">Save</button>
         </div>
+
     </div>
 }
 
@@ -70,21 +71,65 @@
                 initializePage();
             }
         });
+
+        $.ajax({
+            url: '@Url.Action("AddInventory", "Items")',
+            type: 'get',
+            dataType: 'html',
+            success: function (result) {
+                $("#TableInventory").append(result);
+                initializePage();
+            }
+        });
     }
 
     $(".btn-add-variant").click(function () {
         AddVariant();
     });
 
-    @*var parent = { Id: null, Name: 'Parent 1', ChildList: null };
-    var child = { Id: null, Name: 'Child 1' };
-    var childList = []
-    childList.push(child);
-    child = { Id: null, Name: 'Child 2' };
-    childList.push(child);
-    parent.ChildList = childList;
 
-    $("#btn-save").click(function () {
+    $("#btn-save-item").click(function () {
+        var parent = { ID: null, Name: $("#Name").val(), CategoryID: $("#CategoryID").val(), ItemVarians: null, ItemInvents: null };
+
+        var ListVarians = [];
+        var Variant = { ID: null, VariantName: null, SKU: null, Price: null };
+
+        var valInput = "";
+
+        var rowCount = $('#TableVariant tr').length;
+        if (rowCount > 0) {
+            $.each($("#TableVariant").find("tr"), function (i, val) {
+                var varName = $(this).find(":input[name='variant-name']").val();
+                var varSKU = $(this).find(":input[name='variant-sku']").val();
+                var varPrice = $(this).find(":input[name='variant-price']").val();
+
+                varPrice = parseFloat(Number(varPrice.replace(/[^0-9\.]+/g, "")));
+                Variant = { ID: null, VariantName: varName, SKU: varSKU, Price: varPrice };
+                ListVarians.push(Variant);
+            });
+        }
+
+        parent.ItemVarians = ListVarians;
+
+        var ListInvents = [];
+        var Invent = { ID: null, InStock: null, AlertAt: null };
+
+        rowCount = $('#TableInventory tr').length;
+        if (rowCount > 0) {
+            $.each($("#TableInventory").find("tr"), function (i, val) {
+                var varInStock = $(this).find(":input[name='invent-instock']").val();
+                var varAlertAt = $(this).find(":input[name='invent-alert']").val();
+                
+                varInStock = parseFloat(Number(varInStock.replace(/[^0-9\.]+/g, "")));
+                varAlertAt = parseFloat(Number(varAlertAt.replace(/[^0-9\.]+/g, "")));
+
+                Invent = { ID: null, InStock: varInStock, AlertAt: varAlertAt };
+                ListInvents.push(Invent);
+            });
+        }
+
+        parent.ItemInvents = ListInvents;
+
         $.ajax({
             url: '@Url.Action("Create", "Items")',
             data: JSON.stringify(parent),
@@ -92,8 +137,11 @@
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 //alert(result);
-                initializePage();
+                //initializePage();
             }
         });
-    });*@
+
+    });
+
+    
 </script>

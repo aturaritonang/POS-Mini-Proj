@@ -52,10 +52,9 @@
 <script type="text/javascript">
     $(".btn-edit").click(
     function () {
-        
         var vid = $(this).attr("data-id");
-        alert('Masuk : ' + vid);
-        @*$.ajax({
+        //alert('Masuk : ' + vid);
+        $.ajax({
             url: '@Url.Action("Edit", "Items")',
             data: { id: vid },
             type: 'get',
@@ -63,7 +62,7 @@
                 $(".modal-body").html(result);
                 $("#modal-form").modal("show");
             }
-        });*@
+        });
     }
 );
 </script>

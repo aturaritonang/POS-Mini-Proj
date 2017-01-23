@@ -254,6 +254,9 @@
     <Content Include="Views\Items\ItemVarians.cshtml" />
     <Content Include="Views\Items\List.cshtml" />
     <Content Include="Views\Items\Edit.cshtml" />
+    <Content Include="Views\Items\AddVariant.cshtml" />
+    <Content Include="Views\Items\Create.cshtml" />
+    <Content Include="Views\Items\AddInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

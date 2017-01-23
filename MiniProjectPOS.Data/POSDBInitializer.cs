@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace MiniProjectPOS.Data
 {
-    public class POSDBInitializer: DropCreateDatabaseAlways<POSDataContext>
+    public class POSDBInitializer: DropCreateDatabaseIfModelChanges<POSDataContext>
     {
         public override void InitializeDatabase(POSDataContext context)
         {
-            context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
-            , string.Format("ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
-
+            //context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
+            //, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
             base.InitializeDatabase(context);
         }
         protected override void Seed(POSDataContext context)

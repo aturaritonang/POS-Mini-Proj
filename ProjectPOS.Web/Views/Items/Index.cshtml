@@ -39,20 +39,50 @@
 
 @section Scripts{
     <script type="text/javascript">
-        $(document).ready(function () {
-            SearchDefault();
-        });
+    $(document).ready(function () {
+        SearchDefault();
+    });
 
-        function SearchDefault() {
-            var textSearch = $("#index-search").val();
+    function SearchDefault() {
+        var textSearch = $("#index-search").val();
+        $.ajax({
+            url: '@Url.Action("Search", "Items")',
+            data: { strSearch: textSearch },
+            type: 'get',
+            success: function (result) {
+                $("#TableList").html(result);
+            }
+        });
+    }
+
+        $("#btn-add").click(function () {
             $.ajax({
-                url: '@Url.Action("Search", "Items")',
-                data: { strSearch: textSearch },
+                url: '@Url.Action("Create", "Items")',
                 type: 'get',
+                contentType: 'html',
                 success: function (result) {
-                    $("#TableList").html(result);
+                    $(".modal-body").html(result);
+                    $("#modal-form").modal("show");
                 }
             });
+        });
+
+        function RemoveRow(x) {
+            var idx = $(x).closest('tr').index()
+            $("#TableVariant tr:eq(" + idx + ")").remove();
+            $("#TableInventory tr:eq(" + idx + ")").remove();
         }
-</script>
+
+        function BindWithInventory(x) {
+            var vVal = $(x).val();
+            var idx = $(x).closest('tr').index();
+            var tr = $("#TableInventory tr:eq(" + idx + ")");
+            var td = $(tr).children().eq(0);
+            var input = $(td).children().eq(0);
+            //td.text(vVal);
+            $(".input-inv-name").val(val);
+            //alert(td.html());
+        }
+
+    </script>
 }
