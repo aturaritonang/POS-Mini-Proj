@@ -15,6 +15,7 @@ namespace MiniProjectPOS.Data
         {
             Database.SetInitializer(new POSDBInitializer());
         }
+
         public virtual DbSet<MSTProvince> MSTProvince { get; set; }
         public virtual DbSet<MSTDistrict> MSTDistrict { get; set; }
         public virtual DbSet<MSTRegion> MSTRegion { get; set; }

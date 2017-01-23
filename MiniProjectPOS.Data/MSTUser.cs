@@ -29,8 +29,8 @@ namespace MiniProjectPOS.Data
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
-        [Required]
-        public virtual MSTEmployees Employee { get; set; }
+        //[Required]
+        public virtual ICollection<MSTEmployees> Employees { get; set; }
 
         [ForeignKey("RoleID")]
         public virtual MSTRole Role { get; set; }

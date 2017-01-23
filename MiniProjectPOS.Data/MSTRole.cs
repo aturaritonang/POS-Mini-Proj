@@ -29,6 +29,6 @@ namespace MiniProjectPOS.Data
         public int? ModifiedBy { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
-        public ICollection<MSTRole> Roles { get; set; }
+        public virtual ICollection<MSTUser> Users { get; set; }
     }
 }
