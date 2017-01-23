@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace MiniProjectPOS.Data
 {
-    public class POSDBInitializer: DropCreateDatabaseIfModelChanges<POSDataContext>
+    public class POSDBInitializer: DropCreateDatabaseAlways<POSDataContext>
     {
         public override void InitializeDatabase(POSDataContext context)
         {
             //context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
             //, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
+
             base.InitializeDatabase(context);
         }
+
         protected override void Seed(POSDataContext context)
         {
             IList<MSTCategory> Categories = new List<MSTCategory>();
@@ -81,6 +83,23 @@ namespace MiniProjectPOS.Data
 
             foreach (MSTItemsVariantOutlet ivo in ItemVarianOutlets)
                 context.MSTItemsVariantOutlet.Add(ivo);
+
+            IList<MSTRole> Roles = new List<MSTRole>();
+            Roles.Add(new MSTRole() { ID = 1, RoleName = "Administrator", Description = "Category, Supplier, Outlet, Items, Employee" });
+            Roles.Add(new MSTRole() { ID = 2, RoleName = "Back Office", Description = "Employee, Category, Supplier, Items, Summary, PO, Transfer Stock, Adjustment, Payment" });
+            Roles.Add(new MSTRole() { ID = 3, RoleName = "Cashier", Description = "Items, Payment" });
+
+            foreach (MSTRole role in Roles)
+                context.MSTRole.Add(role);
+
+            IList<MSTUser> Users = new List<MSTUser>();
+
+            Users.Add(new MSTUser() { Username = "admin", Password = "admin", Status = true, RoleID = 1 });
+            Users.Add(new MSTUser() { Username = "user1", Password = "user1", Status = true, RoleID = 2 });
+            Users.Add(new MSTUser() { Username = "user2", Password = "user2", Status = true, RoleID = 3 });
+
+            foreach (MSTUser user in Users)
+                context.MSTUser.Add(user);
 
             base.Seed(context);
         }

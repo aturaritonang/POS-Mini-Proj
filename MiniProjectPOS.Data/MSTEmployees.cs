@@ -36,9 +36,9 @@ namespace MiniProjectPOS.Data
 
         public int? UserId { get; set; }
 
-        //[ForeignKey("UserId")]
+        [ForeignKey("UserId")]
         public virtual MSTUser User { get; set; }
 
-        public virtual ICollection<TRXPayment> Payment { get; set; }
+        public virtual ICollection<TRXPayment> Payments { get; set; }
     }
 }
