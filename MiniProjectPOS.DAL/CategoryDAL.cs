@@ -25,7 +25,7 @@ namespace MiniProjectPOS.DAL
             return result;
         }
 
-        public static List<CategoryViewModel> GetAllBySearch(string strSearch) 
+        public static List<CategoryViewModel> GetAllBySearch(string strSearch, int outletId) 
         {
             List<CategoryViewModel> result;
             using (POSDataContext db = new POSDataContext())
@@ -37,7 +37,7 @@ namespace MiniProjectPOS.DAL
                           from j20 in j2.DefaultIfEmpty()
                           join ivo in db.MSTItemsVariantOutlet on j20.ID equals ivo.VariantId into j3
                           from j30 in j3.DefaultIfEmpty()
-                          where c.Name.Contains(strSearch)
+                          where c.Name.Contains(strSearch) && j30.OutletID == outletId
                           group j30.Ending by new { c.ID, c.Name } into eg
                           select new CategoryViewModel
                           {
@@ -71,6 +71,31 @@ namespace MiniProjectPOS.DAL
             }
             return result;
         }
+
+
+        public static List<CategoryViewModel> GetAllByOutletId(int outletId)
+        {
+            List<CategoryViewModel> result;
+            using (POSDataContext db = new POSDataContext())
+            {
+                result = (from c in db.MSTCategory
+                          join i in db.MSTItems on c.ID equals i.CategoryID into j1
+                          from j10 in j1.DefaultIfEmpty()
+                          join iv in db.MSTItemsVariant on j10.ID equals iv.ItemID into j2
+                          from j20 in j2.DefaultIfEmpty()
+                          join ivo in db.MSTItemsVariantOutlet on j20.ID equals ivo.VariantId into j3
+                          from j30 in j3.DefaultIfEmpty()
+                          where j30.OutletID == outletId
+                          select new CategoryViewModel
+                          {
+                              ID = c.ID,
+                              Name = c.Name + " - " + j20.VariantName,
+                              ItemStock = j3.Sum(x => x.Ending) == null ? 0 : j3.Sum(x => x.Ending)
+                          }).ToList();
+            }
+            return result;
+        }
+
         public static CategoryViewModel GetById(int? id) 
         {
             CategoryViewModel result = new CategoryViewModel();

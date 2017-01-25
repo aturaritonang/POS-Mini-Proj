@@ -12,8 +12,7 @@ namespace MiniProjectPOS.Data
     {
         public override void InitializeDatabase(POSDataContext context)
         {
-            //context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction
-            //, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
+            context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
 
             base.InitializeDatabase(context);
         }
@@ -94,9 +93,9 @@ namespace MiniProjectPOS.Data
 
             IList<MSTUser> Users = new List<MSTUser>();
 
-            Users.Add(new MSTUser() { Username = "admin", Password = "admin", Status = true, RoleID = 1 });
-            Users.Add(new MSTUser() { Username = "user1", Password = "user1", Status = true, RoleID = 2 });
-            Users.Add(new MSTUser() { Username = "user2", Password = "user2", Status = true, RoleID = 3 });
+            Users.Add(new MSTUser() { ID = 1, Username = "admin", Password = "admin", Status = true, RoleID = 1 });
+            Users.Add(new MSTUser() { ID = 2, Username = "user1", Password = "user1", Status = true, RoleID = 2 });
+            Users.Add(new MSTUser() { ID = 3, Username = "user2", Password = "user2", Status = true, RoleID = 3 });
 
             foreach (MSTUser user in Users)
                 context.MSTUser.Add(user);

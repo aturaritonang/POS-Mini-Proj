@@ -1,5 +1,6 @@
 ﻿using MiniProjectPOS.DAL;
 using MiniProjectPOS.ViewModel;
+using ProjectPOS.Web.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,19 @@ using System.Web.Mvc;
 
 namespace ProjectPOS.Web.Controllers
 {
+    [CustomAuthorize(Roles = "Administrator")]
     public class CategoryController : Controller
     {
+        private int outletId = int.Parse(SessionPersister.Outlet);
         // GET: Category
         public ActionResult Index()
         {
-            return View(CategoryDAL.GetAllAndItems());
+            return View(CategoryDAL.GetAllByOutletId(outletId));
         }
 
         public ActionResult Search(string strSearch) 
         {
-            return PartialView("List", CategoryDAL.GetAllBySearch(strSearch));
+            return PartialView("List", CategoryDAL.GetAllBySearch(strSearch, outletId));
         }
 
         public ActionResult Create() 

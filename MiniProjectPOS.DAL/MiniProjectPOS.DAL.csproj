@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountDAL.cs" />
     <Compile Include="CategoryDAL.cs" />
     <Compile Include="DistrictDAL.cs" />
     <Compile Include="ItemsDAL.cs" />
