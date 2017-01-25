@@ -29,25 +29,60 @@
 
         <div class="form-group">
             <table id="TableVariant">
+                @for (int I = 0; I < Model.ItemVarians.Count; I++)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(X => X.ItemVarians[I].ID)
+                            @Html.EditorFor(X => X.ItemVarians[I].VariantName, new { htmlAttributes = new { @onkeyup = "BindWithInventory(this)", @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(X => X.ItemVarians[I].SKU, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(X => X.ItemVarians[I].Price, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td><button type="button" class="btn btn-del-var btn-danger" onclick="RemoveRow($(this).closest('tr').index())"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+                    </tr>
+                }
             </table>
         </div>
+
         <button type="button" class="btn btn-add-variant btn-success">Add Variant</button>
 
-        <div id="TableInventory">
+        <div class="form-group">
             <table id="TableInventory">
+                @for (int I = 0; I < Model.ItemVarians.Count; I++)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(X => X.ItemVarians[I].Invents.ID)
+                            @Html.EditorFor(X => X.ItemVarians[I].Invents.VariantName, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(X => X.ItemVarians[I].Invents.InStock, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(X => X.ItemVarians[I].Invents.AlertAt, new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-save btn-primary">Save</button>
+            <button type="submit" class="btn btn-save btn-primary">Save</button>
         </div>
     </div>
 }
 
 <script type="text/javascript">
     $(document).ready(function () {
-        AddVariant();
+        var rowCount = $('#TableVariant tr').length;
+        if (rowCount == 0) {
+            AddVariant();
+        }
     });
 
     function GetItemVariants() {
@@ -60,40 +95,7 @@
         });
     }
 
-    function AddVariant() {
-        $.ajax({
-            url: '@Url.Action("AddVariant", "Items")',
-            type: 'get',
-            dataType: 'html',
-            success: function (result) {
-                $("#TableVariant").append(result);
-                initializePage();
-            }
-        });
-    }
-
     $(".btn-add-variant").click(function () {
         AddVariant();
     });
-
-    @*var parent = { Id: null, Name: 'Parent 1', ChildList: null };
-    var child = { Id: null, Name: 'Child 1' };
-    var childList = []
-    childList.push(child);
-    child = { Id: null, Name: 'Child 2' };
-    childList.push(child);
-    parent.ChildList = childList;
-
-    $("#btn-save").click(function () {
-        $.ajax({
-            url: '@Url.Action("Create", "Items")',
-            data: JSON.stringify(parent),
-            type: 'post',
-            contentType: 'application/json; charset=utf-8',
-            success: function (result) {
-                //alert(result);
-                initializePage();
-            }
-        });
-    });*@
 </script>

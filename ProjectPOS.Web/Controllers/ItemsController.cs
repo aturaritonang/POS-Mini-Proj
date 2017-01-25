@@ -39,6 +39,20 @@ namespace ProjectPOS.Web.Controllers
             return PartialView("Edit", ItemsDAL.GetById(id));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ItemsViewModel model) 
+        {
+            if (ModelState.IsValid)
+            {
+                if (ItemsDAL.Edit(model))
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View("Index");
+        }
+
         public ActionResult AddVariant() 
         {
             return PartialView();
@@ -49,12 +63,16 @@ namespace ProjectPOS.Web.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Create(ItemsViewModel model) 
+        //[AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(ItemsViewModel model)
         {
-            if (ItemsDAL.Add(model))
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                if (ItemsDAL.Add(model))
+                {
+                    return RedirectToAction("Index");
+                }
             }
             return PartialView("Create", model);
         }

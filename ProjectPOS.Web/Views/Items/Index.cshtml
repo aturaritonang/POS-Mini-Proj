@@ -1,11 +1,8 @@
-﻿
-
-@{
+﻿@{
     ViewBag.Title = "Items";
 }
 
 <h2>@ViewBag.Title</h2>
-
 <div class="row">
     <div class="col-sm-6">
         <div class="input-group">
@@ -67,10 +64,80 @@
             });
         });
 
-        function RemoveRow(x) {
-            var idx = $(x).closest('tr').index()
+        function AddVariant() {
+            $.ajax({
+                url: '@Url.Action("AddVariant", "Items")',
+                type: 'get',
+                dataType: 'html',
+                success: function (result) {
+                    $("#TableVariant").append(result);
+                    initializePage();
+                }
+            });
+
+            $.ajax({
+                url: '@Url.Action("AddInventory", "Items")',
+                type: 'get',
+                dataType: 'html',
+                success: function (result) {
+                    $("#TableInventory").append(result);
+                    initializePage();
+                }
+            });
+
+            setTimeout(function () {
+                RefactorName();
+            }, 1000);
+        }
+
+        function RemoveRow(idx) {
             $("#TableVariant tr:eq(" + idx + ")").remove();
             $("#TableInventory tr:eq(" + idx + ")").remove();
+            setTimeout(function () {
+                RefactorName();
+            }, 1000);
+        }
+
+        function RefactorName() {
+
+            var rowCount = $('#TableVariant tr').length;
+            if (rowCount > 0) {
+                var idx = 0;
+                $.each($("#TableVariant").find("tr"), function (i, val) {
+                    var varName = $(this).find(":input[name*='.VariantName']");
+                    var varSKU = $(this).find(":input[name*='.SKU']");
+                    var varPrice = $(this).find(":input[name*='.Price']");
+
+                    $(varName).attr("id", varName.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
+                    $(varSKU).attr("id", varSKU.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
+                    $(varPrice).attr("id", varPrice.attr("id").replace(/\__.*?\_\s?/g, "_" + idx + "__"));
+
+                    $(varName).attr("name", varName.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    $(varSKU).attr("name", varSKU.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    $(varPrice).attr("name", varPrice.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    idx += 1;
+                });
+            }
+
+            rowCount = $('#TableInventory tr').length;
+            if (rowCount > 0) {
+                var idx = 0;
+                $.each($("#TableInventory").find("tr"), function (i, val) {
+                    var varVarName = $(this).find(":input[name*='.Invents.VariantName']");
+                    var varInStock = $(this).find(":input[name*='.Invents.InStock']");
+                    var varAlertAt = $(this).find(":input[name*='.Invents.AlertAt']");
+
+                    $(varVarName).attr("id", varVarName.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
+                    $(varInStock).attr("id", varInStock.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
+                    $(varAlertAt).attr("id", varAlertAt.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
+
+                    $(varVarName).attr("name", varVarName.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    $(varInStock).attr("name", varInStock.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    $(varAlertAt).attr("name", varAlertAt.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    idx += 1;
+                });
+            }
+
         }
 
         function BindWithInventory(x) {
@@ -79,9 +146,7 @@
             var tr = $("#TableInventory tr:eq(" + idx + ")");
             var td = $(tr).children().eq(0);
             var input = $(td).children().eq(0);
-            //td.text(vVal);
             $(".input-inv-name").val(val);
-            //alert(td.html());
         }
 
     </script>

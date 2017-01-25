@@ -40,7 +40,8 @@
 
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button id="btn-save-item" type="button" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-save btn-primary">Save</button>
+            @*<button id="btn-save-item" type="button" class="btn btn-primary">Save</button>*@
         </div>
 
     </div>
@@ -61,38 +62,15 @@
         });
     }
 
-    function AddVariant() {
-        $.ajax({
-            url: '@Url.Action("AddVariant", "Items")',
-            type: 'get',
-            dataType: 'html',
-            success: function (result) {
-                $("#TableVariant").append(result);
-                initializePage();
-            }
-        });
-
-        $.ajax({
-            url: '@Url.Action("AddInventory", "Items")',
-            type: 'get',
-            dataType: 'html',
-            success: function (result) {
-                $("#TableInventory").append(result);
-                initializePage();
-            }
-        });
-    }
-
     $(".btn-add-variant").click(function () {
         AddVariant();
     });
 
-
     $("#btn-save-item").click(function () {
-        var parent = { ID: null, Name: $("#Name").val(), CategoryID: $("#CategoryID").val(), ItemVarians: null, ItemInvents: null };
+        var parent = { ID: null, Name: $("#Name").val(), CategoryID: $("#CategoryID").val(), ItemVarians: null};
 
         var ListVarians = [];
-        var Variant = { ID: null, VariantName: null, SKU: null, Price: null };
+        var Variant = { ID: null, VariantName: null, SKU: null, Price: null, Invents: null };
 
         var valInput = "";
 
@@ -109,13 +87,12 @@
             });
         }
 
-        parent.ItemVarians = ListVarians;
-
-        var ListInvents = [];
+        //var ListInvents = [];
         var Invent = { ID: null, InStock: null, AlertAt: null };
 
         rowCount = $('#TableInventory tr').length;
         if (rowCount > 0) {
+            var counter = 0;
             $.each($("#TableInventory").find("tr"), function (i, val) {
                 var varInStock = $(this).find(":input[name='invent-instock']").val();
                 var varAlertAt = $(this).find(":input[name='invent-alert']").val();
@@ -124,12 +101,16 @@
                 varAlertAt = parseFloat(Number(varAlertAt.replace(/[^0-9\.]+/g, "")));
 
                 Invent = { ID: null, InStock: varInStock, AlertAt: varAlertAt };
-                ListInvents.push(Invent);
+                ListVarians[counter].Invents = Invent;
+                counter += 1;
+                //ListInvents.push(Invent);
             });
         }
 
-        parent.ItemInvents = ListInvents;
+        parent.ItemVarians = ListVarians;
 
+        //parent.ItemInvents = ListInvents;
+        //alert(JSON.stringify(parent));
         $.ajax({
             url: '@Url.Action("Create", "Items")',
             data: JSON.stringify(parent),
@@ -140,7 +121,6 @@
                 //initializePage();
             }
         });
-
     });
 
     
