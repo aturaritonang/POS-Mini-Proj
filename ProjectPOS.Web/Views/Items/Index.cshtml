@@ -90,12 +90,36 @@
             }, 1000);
         }
 
-        function RemoveRow(idx) {
-            $("#TableVariant tr:eq(" + idx + ")").remove();
-            $("#TableInventory tr:eq(" + idx + ")").remove();
+        function RemoveRow(obj) {
+            $(obj).closest('tr').hide();
+            $(obj).prev('input').val('-1');
+            var idx = $(obj).closest('tr').index();
+            $("#TableInventory tr:eq(" + idx + ")").hide();
             setTimeout(function () {
                 RefactorName();
             }, 1000);
+
+            //$('<div></div>').appendTo('body')
+            //    .html('<div><h6>Are you sure?</h6></div>')
+            //    .dialog({
+            //        modal: true,
+            //        title: 'Delete message',
+            //        zIndex: 10000,
+            //        autoOpen: true,
+            //        width: 'auto',
+            //        resizable: false,
+            //        buttons: {
+            //            Yes: function () {
+            //                $(this).dialog("close");
+            //            },
+            //            No: function () {
+            //                $(this).dialog("close");
+            //            }
+            //        },
+            //        close: function (event, ui) {
+            //            $(this).remove();
+            //        }
+            //    });
         }
 
         function RefactorName() {
@@ -104,17 +128,23 @@
             if (rowCount > 0) {
                 var idx = 0;
                 $.each($("#TableVariant").find("tr"), function (i, val) {
+                    var varID = $(this).find(":input[name*='.ID']");
                     var varName = $(this).find(":input[name*='.VariantName']");
                     var varSKU = $(this).find(":input[name*='.SKU']");
                     var varPrice = $(this).find(":input[name*='.Price']");
+                    var varRecStatus = $(this).find(":input[name*='.RecStatus']");
 
+                    $(varID).attr("id", varID.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
                     $(varName).attr("id", varName.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
                     $(varSKU).attr("id", varSKU.attr("id").replace(/\_.*?\__\s?/g, "_" + idx + "__"));
                     $(varPrice).attr("id", varPrice.attr("id").replace(/\__.*?\_\s?/g, "_" + idx + "__"));
+                    $(varRecStatus).attr("id", varRecStatus.attr("id").replace(/\__.*?\_\s?/g, "_" + idx + "__"));
 
+                    $(varID).attr("name", varID.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
                     $(varName).attr("name", varName.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
                     $(varSKU).attr("name", varSKU.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
                     $(varPrice).attr("name", varPrice.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
+                    $(varRecStatus).attr("name", varRecStatus.attr("name").replace(/\[.*?\]\s?/g, "[" + idx + "]"));
                     idx += 1;
                 });
             }
@@ -144,9 +174,12 @@
             var vVal = $(x).val();
             var idx = $(x).closest('tr').index();
             var tr = $("#TableInventory tr:eq(" + idx + ")");
-            var td = $(tr).children().eq(0);
-            var input = $(td).children().eq(0);
-            $(".input-inv-name").val(val);
+            var varVarName = tr.find(":input[name*='.Invents.VariantName']");
+            varVarName.val(vVal);
+            //alert(varVarName.val());
+            //var td = $(tr).children().eq(0);
+            //var input = $(td).children().eq(0);
+            //$(".input-inv-name").val(val);
         }
 
     </script>

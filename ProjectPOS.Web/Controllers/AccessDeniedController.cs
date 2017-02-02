@@ -11,7 +11,14 @@ namespace ProjectPOS.Web.Controllers
         // GET: AccessDenied
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAjaxRequest())
+                return PartialView();
+            else
+                return View();
+        }
+
+        public ActionResult AccessButtons() {
+            return PartialView();
         }
     }
 }

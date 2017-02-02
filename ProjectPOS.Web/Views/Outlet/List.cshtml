@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MiniProjectPOS.ViewModel.OutletViewModel>
+﻿@using ProjectPOS.Web.Security
+@model IEnumerable<MiniProjectPOS.ViewModel.OutletViewModel>
 
 <table class="table">
     <tr>
@@ -61,7 +62,10 @@
             </td>
             <td>
                 <div class="btn-group btn-group-sm btn-group-solid">
-                    <button type="button" class="btn btn-action btn-edit btn-warning" data-id="@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                    @{if (SessionPersister.Username == "admin")
+                    {
+                        <button type="button" class="btn btn-action btn-edit btn-warning" data-id="@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                    }}
                     <button type="button" class="btn btn-action btn-details btn-success" data-id="@item.ID"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></button>
                     <button type="button" class="btn btn-action btn-delete btn-danger" data-id="@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                 </div>

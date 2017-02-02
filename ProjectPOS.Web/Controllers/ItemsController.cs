@@ -50,6 +50,10 @@ namespace ProjectPOS.Web.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
             return View("Index");
         }
 

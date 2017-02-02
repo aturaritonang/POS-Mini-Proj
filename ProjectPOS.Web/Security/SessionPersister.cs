@@ -9,6 +9,7 @@ namespace ProjectPOS.Web.Security
     {
         static string usernameSessionVar = "username";
         static string outletSessionVar = "0";
+        static string roleIdVar = "0";
         public static string Username 
         {
             get
@@ -46,5 +47,24 @@ namespace ProjectPOS.Web.Security
                 HttpContext.Current.Session[outletSessionVar] = value;
             }
         }
+
+        public static string RoleId
+        {
+            get
+            {
+                if (HttpContext.Current == null)
+                    return string.Empty;
+
+                var roleId = HttpContext.Current.Session[roleIdVar];
+                if (roleId != null)
+                    return roleId as string;
+                return null;
+            }
+            set
+            {
+                HttpContext.Current.Session[roleIdVar] = value;
+            }
+        }
+
     }
 }

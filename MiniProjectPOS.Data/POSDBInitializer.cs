@@ -12,7 +12,7 @@ namespace MiniProjectPOS.Data
     {
         public override void InitializeDatabase(POSDataContext context)
         {
-            context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
+            //context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, string.Format("ALTER DATABASE [{0}] SET MULTI_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
 
             base.InitializeDatabase(context);
         }
@@ -65,20 +65,22 @@ namespace MiniProjectPOS.Data
             ItemVarians.Add(new MSTItemsVariant() { ItemID = 3, VariantName = "Var C", SKU = "SKU006", Price = 133000000 });// 5
             ItemVarians.Add(new MSTItemsVariant() { ItemID = 3, VariantName = "Var D", SKU = "SKU007", Price = 165000000 });// 6
             ItemVarians.Add(new MSTItemsVariant() { ItemID = 5, VariantName = "Pnt X", SKU = "SKU008", Price = 127000000 });// 7
-            ItemVarians.Add(new MSTItemsVariant() { ItemID = 5, VariantName = "Pnt XZ", SKU = "SKU008", Price = 111000000 });// 8
+            ItemVarians.Add(new MSTItemsVariant() { ItemID = 5, VariantName = "Pnt XZ", SKU = "SKU009", Price = 111000000 });// 8
+            ItemVarians.Add(new MSTItemsVariant() { ItemID = 5, VariantName = "Pnt XX", SKU = "SKU010", Price = 120000000 });// 9
 
             foreach (MSTItemsVariant item in ItemVarians)
                 context.MSTItemsVariant.Add(item);
 
             IList<MSTItemsVariantOutlet> ItemVarianOutlets = new List<MSTItemsVariantOutlet>();
             ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 1, OutletID = 1, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 5, AlertAt = 1 }); //1
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 2, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 3, AlertAt = 1 }); //2
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 3, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 6, AlertAt = 1 }); //3
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 4, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 10, AlertAt = 1 }); //4
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 5, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 3, AlertAt = 1 }); //5
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 6, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 1, AlertAt = 1 }); //6
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 7, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 1, AlertAt = 1 }); //6
-            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 8, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 1, Ending = 1, AlertAt = 1 }); //6
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 2, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 2, Ending = 3, AlertAt = 1 }); //2
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 3, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 3, Ending = 6, AlertAt = 1 }); //3
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 4, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 4, Ending = 10, AlertAt = 1 }); //4
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 5, OutletID = 2, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 5, Ending = 3, AlertAt = 1 }); //5
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 6, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 6, Ending = 1, AlertAt = 1 }); //6
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 7, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 7, Ending = 1, AlertAt = 1 }); //7
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 8, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 8, Ending = 1, AlertAt = 1 }); //8
+            ItemVarianOutlets.Add(new MSTItemsVariantOutlet() { VariantId = 9, OutletID = 3, Beginning = 125, PurchaseOrder = 12, Sales = 5, Transfer = 0, Adjusment = 9, Ending = 1, AlertAt = 1 }); //9
 
             foreach (MSTItemsVariantOutlet ivo in ItemVarianOutlets)
                 context.MSTItemsVariantOutlet.Add(ivo);
@@ -99,6 +101,27 @@ namespace MiniProjectPOS.Data
 
             foreach (MSTUser user in Users)
                 context.MSTUser.Add(user);
+
+            IList<MSTEmployees> Employees = new List<MSTEmployees>();
+
+            Employees.Add(new MSTEmployees() { ID = 1, FirstName = "Marzuki", LastName = "Lambreta", Email = "zuki@email.com", Title = "Administrator" });
+            Employees.Add(new MSTEmployees() { ID = 2, FirstName = "Dalila", LastName = "Nasution", Email = "delila@email.com", Title = "Staff" });
+            Employees.Add(new MSTEmployees() { ID = 3, FirstName = "Mukidi", LastName = "Ali", Email = "mukidi@email.com", Title = "Super Staff" });
+
+            foreach (MSTEmployees employee in Employees)
+                context.MSTEmployees.Add(employee);
+
+            IList<MSTEmployeeOutlet> EmployeeOutlets = new List<MSTEmployeeOutlet>();
+
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 1, EmployeeID = 1, OutletID = 1 });
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 2, EmployeeID = 1, OutletID = 2 });
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 3, EmployeeID = 1, OutletID = 3 });
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 4, EmployeeID = 2, OutletID = 1 });
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 5, EmployeeID = 2, OutletID = 2 });
+            EmployeeOutlets.Add(new MSTEmployeeOutlet() { ID = 6, EmployeeID = 3, OutletID = 3 });
+
+            foreach (MSTEmployeeOutlet employeeOutlet in EmployeeOutlets)
+                context.MSTEmployeeOutlet.Add(employeeOutlet);
 
             base.Seed(context);
         }

@@ -147,72 +147,145 @@ namespace MiniProjectPOS.DAL
                     db.Entry(mstItems).State = EntityState.Modified;
 
                     List<ItemsVariantViewModel> listVariant = model.ItemVarians;
-                    List<ItemsInventoryViewModel> listInvent = new List<ItemsInventoryViewModel>();
+                    //List<ItemsInventoryViewModel> listInvent = new List<ItemsInventoryViewModel>();
 
                     int dummyId = 0;
 
-                    for (int I = 0; I < listVariant.Count; I++)
+                    foreach (var item in listVariant)
                     {
-                        ItemsVariantViewModel variant = new ItemsVariantViewModel();
-                        variant = listVariant[I];
 
-                        MSTItemsVariant mstItemsVariant = db.MSTItemsVariant.Where(X => X.ID == variant.ID).FirstOrDefault();
-
-                        if (mstItemsVariant != null)
+                        if (item.RecStatus == 0)
                         {
-                            mstItemsVariant.ItemID = mstItems.ID;
-                            mstItemsVariant.VariantName = variant.VariantName;
-                            mstItemsVariant.SKU = variant.SKU;
-                            mstItemsVariant.Price = variant.Price;
-                            //db.Entry(mstItemsVariant).State = EntityState.Modified;
+                            MSTItemsVariant mstItemsVariant = db.MSTItemsVariant.Where(X => X.ID == item.ID).FirstOrDefault();
+                            
+                            if (mstItemsVariant != null)
+                            {
+                                mstItemsVariant.VariantName = item.VariantName;
+                                mstItemsVariant.SKU = item.SKU;
+                                mstItemsVariant.Price = item.Price;
+                                mstItemsVariant.ModifiedBy = 1;
+                                mstItemsVariant.ModifiedOn = DateTime.Now;
+                            }
+
+                            MSTItemsVariantOutlet mstItemsVariantOutlet = db.MSTItemsVariantOutlet.Where(X => X.VariantId == item.ID).FirstOrDefault();
+
+                            if (mstItemsVariantOutlet != null)
+                            {
+                                mstItemsVariantOutlet.Ending = item.Invents.InStock;
+                                mstItemsVariantOutlet.AlertAt = item.Invents.AlertAt;
+                            }
                         }
-                        else
+                        else if (item.RecStatus == 1)
                         {
-                            mstItemsVariant = new MSTItemsVariant();
-                            mstItemsVariant.ItemID = mstItems.ID;
-                            mstItemsVariant.VariantName = variant.VariantName;
-                            mstItemsVariant.SKU = variant.SKU;
-                            mstItemsVariant.Price = variant.Price;
-
-                            //db.Entry(mstItems).State = EntityState.Added;
+                            MSTItemsVariant mstItemsVariant = new MSTItemsVariant();
+                            mstItemsVariant.ItemID = model.ID;
+                            mstItemsVariant.VariantName = item.VariantName;
+                            mstItemsVariant.SKU = item.SKU;
+                            mstItemsVariant.Price = item.Price;
+                            
+                            mstItemsVariant.CreatedBy = 1;
+                            mstItemsVariant.CreatedOn = DateTime.Now;
                             db.MSTItemsVariant.Add(mstItemsVariant);
-                        }
 
-                        MSTItemsVariantOutlet mstItemsVariantOutlet = db.MSTItemsVariantOutlet.Where(X => X.ID == variant.Invents.ID).FirstOrDefault();
-                        
-                        if (mstItemsVariantOutlet != null)
-                        {
-                            mstItemsVariantOutlet.Ending = variant.Invents.InStock;
-                            mstItemsVariantOutlet.AlertAt = variant.Invents.AlertAt;
-                            db.Entry(mstItemsVariant).State = EntityState.Modified;
-                        }
-                        else
-                        {
-                            mstItemsVariantOutlet = new MSTItemsVariantOutlet();
+                            MSTItemsVariantOutlet mstItemsVariantOutlet = new MSTItemsVariantOutlet();
                             mstItemsVariant.ID = --dummyId;
                             mstItemsVariantOutlet.VariantId = mstItemsVariant.ID;
-                            mstItemsVariantOutlet.Ending = variant.Invents.InStock;
-                            mstItemsVariantOutlet.AlertAt = variant.Invents.AlertAt;
+                            mstItemsVariantOutlet.OutletID = 1;
+                            mstItemsVariantOutlet.Beginning = 0;
+                            mstItemsVariantOutlet.Sales = 0;
+                            mstItemsVariantOutlet.Transfer = 0;
+                            mstItemsVariantOutlet.Adjusment = 0;
+                            mstItemsVariantOutlet.Ending = item.Invents.InStock;
+                            mstItemsVariantOutlet.AlertAt = item.Invents.AlertAt;
+
+                            mstItemsVariantOutlet.CreatedBy = 1;
+                            mstItemsVariantOutlet.CreatedOn = DateTime.Now;
+                            
                             db.Entry(mstItemsVariant).State = EntityState.Added;
                             db.MSTItemsVariantOutlet.Add(mstItemsVariantOutlet);
                         }
-                        listInvent.Add(listVariant[I].Invents);
-                    }
-
-                    List<MSTItemsVariant> mstItemsVariants = db.MSTItemsVariant.Where(X => X.ItemID == model.ID).ToList();
-
-                    foreach (MSTItemsVariant ItemsVariant in mstItemsVariants)
-                    {
-                        if (listVariant.Find(X => X.ID == ItemsVariant.ID) == null)
+                        else 
                         {
-                            List<MSTItemsVariantOutlet> ItemsVariantOutlets = db.MSTItemsVariantOutlet.Where(X => X.VariantId == ItemsVariant.ID).ToList();
-                            foreach (MSTItemsVariantOutlet ItemsVariantOutlet in ItemsVariantOutlets)
+                            MSTItemsVariant mstItemsVariant = db.MSTItemsVariant.Where(X => X.ID == item.ID).FirstOrDefault();
+                            if (mstItemsVariant != null)
                             {
-                                db.MSTItemsVariantOutlet.Remove(ItemsVariantOutlet);
+                                db.MSTItemsVariant.Remove(mstItemsVariant);
                             }
-                            db.MSTItemsVariant.Remove(ItemsVariant);
+
+                            MSTItemsVariantOutlet mstItemsVariantOutlet = db.MSTItemsVariantOutlet.Where(X => X.VariantId == item.ID).FirstOrDefault();
+                            if (mstItemsVariantOutlet != null)
+                            {
+                                db.MSTItemsVariantOutlet.Remove(mstItemsVariantOutlet);
+                            }
                         }
                     }
+                    //for (int I = 0; I < listVariant.Count; I++)
+                    //{
+                    //    ItemsVariantViewModel variant = new ItemsVariantViewModel();
+                    //    variant = listVariant[I];
+
+                    //    MSTItemsVariant mstItemsVariant = db.MSTItemsVariant.Where(X => X.ID == variant.ID).FirstOrDefault();
+
+                    //    if (mstItemsVariant != null)
+                    //    {
+                    //        mstItemsVariant.ItemID = mstItems.ID;
+                    //        mstItemsVariant.VariantName = variant.VariantName;
+                    //        mstItemsVariant.SKU = variant.SKU;
+                    //        mstItemsVariant.Price = variant.Price;
+                    //        //db.Entry(mstItemsVariant).State = EntityState.Modified;
+                    //    }
+                    //    else
+                    //    {
+                    //        mstItemsVariant = new MSTItemsVariant();
+                    //        mstItemsVariant.ItemID = mstItems.ID;
+                    //        mstItemsVariant.VariantName = variant.VariantName;
+                    //        mstItemsVariant.SKU = variant.SKU;
+                    //        mstItemsVariant.Price = variant.Price;
+
+                    //        //db.Entry(mstItems).State = EntityState.Added;
+                    //        db.MSTItemsVariant.Add(mstItemsVariant);
+                    //    }
+
+                    //    MSTItemsVariantOutlet mstItemsVariantOutlet = db.MSTItemsVariantOutlet.Where(X => X.ID == variant.Invents.ID).FirstOrDefault();
+                        
+                    //    if (mstItemsVariantOutlet != null)
+                    //    {
+                    //        //mstItemsVariant.ID = --dummyId;
+                    //        mstItemsVariantOutlet.Ending = variant.Invents.InStock;
+                    //        mstItemsVariantOutlet.AlertAt = variant.Invents.AlertAt;
+                    //        db.Entry(mstItemsVariant).State = EntityState.Modified;
+                    //    }
+                    //    els
+                    //    {
+                    //        mstItemsVariantOutlet = new MSTItemsVariantOutlet();
+                    //        mstItemsVariant.ID = --dummyId;
+                    //        mstItemsVariantOutlet.VariantId = mstItemsVariant.ID;
+                    //        mstItemsVariantOutlet.Ending = variant.Invents.InStock;
+                    //        mstItemsVariantOutlet.AlertAt = variant.Invents.AlertAt;
+                    //        db.Entry(mstItemsVariant).State = EntityState.Added;
+                    //        db.MSTItemsVariantOutlet.Add(mstItemsVariantOutlet);
+                    //    }
+                    //    listInvent.Add(listVariant[I].Invents);
+                    //}
+
+                    //List<MSTItemsVariant> mstItemsVariants = db.MSTItemsVariant.Where(X => X.ItemID == model.ID).ToList();
+
+                    //foreach (MSTItemsVariant ItemsVariant in mstItemsVariants)
+                    //{
+                    //    if (listVariant.Find(X => X.ID == ItemsVariant.ID) == null)
+                    //    {
+                    //        List<MSTItemsVariantOutlet> ItemsVariantOutlets = db.MSTItemsVariantOutlet.Where(X => X.VariantId == ItemsVariant.ID).ToList();
+
+                    //        foreach (MSTItemsVariantOutlet ItemsVariantOutlet in ItemsVariantOutlets)
+                    //        {
+                    //            db.MSTItemsVariantOutlet.Remove(ItemsVariantOutlet);
+                    //            db.Entry(ItemsVariantOutlet).State = EntityState.Deleted;
+                    //        }
+
+                    //        db.MSTItemsVariant.Remove(ItemsVariant);
+                    //        db.Entry(ItemsVariant).State = EntityState.Deleted;
+                    //    }
+                    //}
 
                     try
                     {

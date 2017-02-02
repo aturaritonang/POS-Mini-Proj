@@ -23,6 +23,18 @@
         </div>
     </div>
     <div class="container body-content">
+        @{if (!string.IsNullOrEmpty(ViewBag.ActionStatus))
+        {
+            <div id="success-alert">@ViewBag.ActionStatus</div>
+                @*<script>
+                    $(document).ready(function () {
+                        $("#success-alert").fadeTo(2000, 500).slideUp(500, function () {
+                            $("#success-alert").slideUp(500);
+                        });
+                  });
+              </script>*@
+        }
+        }
         @RenderBody()
         <hr />
         <footer>

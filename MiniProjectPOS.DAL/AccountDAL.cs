@@ -18,6 +18,7 @@ namespace MiniProjectPOS.DAL
                     .Where(U => U.Username.Equals(username) && U.Password.Equals(password))
                     .Select(X => new AccountViewModel { 
                         Username = X.Username,
+                        RoleID = X.RoleID
                     }).FirstOrDefault();
             }
             return avm;
@@ -35,6 +36,7 @@ namespace MiniProjectPOS.DAL
                     {
                         Username = X.User.Username,
                         Roles = new List<string>{ X.Role.RoleName },
+                        RoleID = X.User.RoleID,
                         RolesX = X.Role.RoleName
                     }).FirstOrDefault();
             }

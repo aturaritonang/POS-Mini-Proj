@@ -23,13 +23,16 @@ namespace ProjectPOS.Web.Controllers
         public ActionResult Login(AccountViewModel model) 
         {
             AccountDAL aDal = new AccountDAL();
-            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password) || AccountDAL.GetByUserNamePassword(model.Username, model.Password) == null)
+            AccountViewModel avm = AccountDAL.GetByUserNamePassword(model.Username, model.Password);
+
+            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password) || avm == null)
             {
                 ViewBag.Error = "Account is invalid.";
                 return View("Index", model);
             }
 
-            SessionPersister.Username = model.Username;
+            SessionPersister.Username = avm.Username;
+            SessionPersister.RoleId = avm.RoleID.ToString();
             return RedirectToAction("SetOutlet");
         }
 

@@ -42,7 +42,9 @@
                         <td>
                             @Html.EditorFor(X => X.ItemVarians[I].Price, new { htmlAttributes = new { @class = "form-control" } })
                         </td>
-                        <td><button type="button" class="btn btn-del-var btn-danger" onclick="RemoveRow($(this).closest('tr').index())"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+                        <td>
+                            @Html.HiddenFor(X => Model.ItemVarians[I].RecStatus)
+                        <button type="button" class="btn btn-del-var btn-danger" onclick="RemoveRow(this)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
                     </tr>
                 }
             </table>
@@ -57,7 +59,7 @@
                     <tr>
                         <td>
                             @Html.HiddenFor(X => X.ItemVarians[I].Invents.ID)
-                            @Html.EditorFor(X => X.ItemVarians[I].Invents.VariantName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(X => X.ItemVarians[I].Invents.VariantName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" }})
                         </td>
                         <td>
                             @Html.EditorFor(X => X.ItemVarians[I].Invents.InStock, new { htmlAttributes = new { @class = "form-control" } })

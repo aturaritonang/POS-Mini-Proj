@@ -1,8 +1,12 @@
 ﻿<tr data-id="">
-    <td><input class="form-control text-box single-line" id="ItemVarians_0__VariantName" name="ItemVarians[0].VariantName" onkeyup="BindWithInventory(this)" value="" type="text"></td>
+    <td>
+        <input data-val="true" data-val-number="The field ID must be a number." data-val-required="The ID field is required." id="ItemVarians_0__ID" name="ItemVarians[0].ID" value="0" type="hidden">
+        <input class="form-control text-box single-line" id="ItemVarians_0__VariantName" name="ItemVarians[0].VariantName" onkeyup="BindWithInventory(this)" value="" type="text">
+    </td>
     <td><input class="form-control text-box single-line" id="ItemVarians_0__SKU" name="ItemVarians[0].SKU" value="" type="text"></td>
     <td><input class="form-control text-box single-line" data-val="true" data-val-number="The field Price must be a number." id="ItemVarians_0__Price" name="ItemVarians[0].Price" value="" type="text"></td>
     <td>
-        <button type="button" class="btn btn-del-var btn-danger" onclick="RemoveRow($(this).closest('tr').index())"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>     
+        <input data-val="true" data-val-required="The RecStatus field is required." id="ItemVarians_0__RecStatus" name="ItemVarians[0].RecStatus" value="1" type="hidden">
+        <button type="button" class="btn btn-del-var btn-danger" onclick="RemoveRow($(this).closest('tr').index())"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
     </td>
 </tr>

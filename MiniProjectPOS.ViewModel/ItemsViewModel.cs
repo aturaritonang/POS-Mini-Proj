@@ -28,6 +28,12 @@ namespace MiniProjectPOS.ViewModel
         public string VariantName { get; set; }
         public string SKU { get; set; }
         public decimal? Price { get; set; }
+
+        private int _RecStatus = 0;
+        public int RecStatus {
+            get { return _RecStatus; }
+            set { _RecStatus = value; }
+        }
         public ItemsInventoryViewModel Invents { get; set; }
     }
 

@@ -1,12 +1,27 @@
-﻿<div class="navbar-collapse collapse">
+﻿@using ProjectPOS.Web.Security
+
+<div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        @*<li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-        <li>@Html.ActionLink("Category", "Index", "Category")</li>
-        <li>@Html.ActionLink("Items", "Index", "Items")</li>
-        <li>@Html.ActionLink("Supplier", "Index", "Supplier")</li>
-        <li>@Html.ActionLink("Outlet", "Index", "Outlet")</li>
+        @if(!string.IsNullOrEmpty(SessionPersister.Username)){
+            var roleId = int.Parse(SessionPersister.RoleId);
+            switch (roleId)
+            {
+                case 1:
+                    <li>@Html.ActionLink("Category", "Index", "Category")</li>
+                    <li>@Html.ActionLink("Items", "Index", "Items")</li>
+                    break;
+                case 2:
+                    <li>@Html.ActionLink("Supplier", "Index", "Supplier")</li>
+                    break;
+                case 3:
+                    <li>@Html.ActionLink("Outlet", "Index", "Outlet")</li>
+                    break;
+                default:
+                    break;
+            }
+            }
+
     </ul>
     @Html.Partial("_LoginPartial")
 </div>
