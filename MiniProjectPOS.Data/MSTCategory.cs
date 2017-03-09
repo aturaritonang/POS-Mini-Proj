@@ -18,6 +18,7 @@ namespace MiniProjectPOS.Data
         [Column(TypeName="VARCHAR")]
         [StringLength(50)]
         public string Name { get; set; }
+
         public int? CreatedBy { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? CreatedOn { get; set; }

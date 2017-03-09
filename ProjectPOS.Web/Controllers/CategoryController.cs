@@ -15,7 +15,7 @@ namespace ProjectPOS.Web.Controllers
         private int outletId = int.Parse(SessionPersister.Outlet);
         // GET: Category
 
-        [SessionExpireFilter]
+        //[SessionExpireFilter]
         public ActionResult Index()
         {
             return View(CategoryDAL.GetAllByOutletId(outletId));
